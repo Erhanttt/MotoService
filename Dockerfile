@@ -34,7 +34,7 @@ RUN php artisan storage:link || true
 # Gjenero APP_KEY nëse mungon
 RUN php artisan key:generate || true
 
-# 🧹 Pastrimi i cache që Laravel të lexojë APP_KEY-in nga ambienti
+# Pastro cache që Laravel të lexojë APP_KEY nga ambienti
 RUN php artisan config:clear
 
 # Vendos lejet për storage dhe cache
@@ -45,9 +45,7 @@ RUN echo "<Directory /var/www/html/public>\n\
     AllowOverride All\n\
 </Directory>" >> /etc/apache2/apache2.conf
 
-# 👉 Migrimi automatik gjatë deploy
-RUN php artisan migrate --force || true
+# ✅ Migrimi automatik gjatë nisjes së aplikacionit
+CMD php artisan migrate --force && apache2-foreground
 
 EXPOSE 80
-
-CMD ["apache2-foreground"]
