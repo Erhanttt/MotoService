@@ -25,16 +25,19 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Installo Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Installo dependencat
+# Installo dependencat e projektit
 RUN composer install --no-dev --optimize-autoloader
 
-# Kopjo dhe beje publik storage link
+# Kopjo dhe bëj publik storage link
 RUN php artisan storage:link || true
 
 # Gjenero APP_KEY nëse mungon
 RUN php artisan key:generate || true
 
-# Vendos lejet për storage
+# 🧹 Pastrimi i cache që Laravel të lexojë APP_KEY-in nga ambienti
+RUN php artisan config:clear
+
+# Vendos lejet për storage dhe cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Configure Apache për Laravel
@@ -42,7 +45,7 @@ RUN echo "<Directory /var/www/html/public>\n\
     AllowOverride All\n\
 </Directory>" >> /etc/apache2/apache2.conf
 
-# 👉 Shto këtë rresht — do bëjë migrimin automatik gjatë deploy
+# 👉 Migrimi automatik gjatë deploy
 RUN php artisan migrate --force || true
 
 EXPOSE 80
