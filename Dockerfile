@@ -15,6 +15,14 @@ COPY . /var/www/html
 # Vendos working directory
 WORKDIR /var/www/html
 
+# Vendos Apache DocumentRoot tek public/
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+# Ndrysho default configuration që Apache të përdorë public/
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+
 # Installo Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
