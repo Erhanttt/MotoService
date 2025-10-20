@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
 
-# Aktivizo Apache mod_rewrite
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
 # Kopjo skedat e projektit në container
@@ -25,25 +25,26 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Installo Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Installo dependencat e Laravel
+# Installo dependencat
 RUN composer install --no-dev --optimize-autoloader
 
-# Krijo symbolic link për storage (nëse dështojnë komandat, mos e ndal procesin)
+# Kopjo dhe beje publik storage link
 RUN php artisan storage:link || true
 
 # Gjenero APP_KEY nëse mungon
 RUN php artisan key:generate || true
 
-# Vendos lejet për storage dhe cache
+# Vendos lejet për storage
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Konfiguro Apache që të lejojë .htaccess në public/
+# Configure Apache për Laravel
 RUN echo "<Directory /var/www/html/public>\n\
     AllowOverride All\n\
 </Directory>" >> /etc/apache2/apache2.conf
 
-# Ekspozo portin 80 (default për HTTP)
+# 👉 Shto këtë rresht — do bëjë migrimin automatik gjatë deploy
+RUN php artisan migrate --force || true
+
 EXPOSE 80
 
-# Nis Apache
 CMD ["apache2-foreground"]
