@@ -68,7 +68,7 @@
             <!-- Desktop Menu -->
             <nav class="hidden md:flex space-x-8">
                 <a href="/" class="text-blue-600 font-medium">Home</a>
-                <a href="{{ route('dyqani.kategorite') }}" class="text-gray-600 hover:text-blue-600 transition duration-300">Dyqani</a>
+                <a href="{{ route('dyqani.kategorite') }}" class="text-gray-600 hover:text-blue-600 transition duration-300">Shop</a>
                 <a href="{{ route('dyqani.about') }}" class="text-gray-600 hover:text-blue-600 transition duration-300">About Us</a>
                 <a href="{{ route('dyqani.contact') }}" class="text-gray-600 hover:text-blue-600 transition duration-300">Contact</a>
             </nav>
@@ -83,7 +83,7 @@
     <!-- Mobile Menu with smooth transition -->
     <nav id="mobile-menu" class="max-h-0 opacity-0 overflow-hidden flex-col md:hidden bg-white w-full shadow-lg transition-all duration-700 ease-in-out">
         <a href="/" class="block w-full px-4 py-4 text-gray-800 hover:bg-gray-50 hover:text-blue-600 transition border-b border-gray-200">Home</a>
-        <a href="{{ route('dyqani.kategorite') }}" class="block w-full px-4 py-4 text-gray-800 hover:bg-gray-50 hover:text-blue-600 transition border-b border-gray-200">Dyqani</a>
+        <a href="{{ route('dyqani.kategorite') }}" class="block w-full px-4 py-4 text-gray-800 hover:bg-gray-50 hover:text-blue-600 transition border-b border-gray-200">Shop</a>
         <a href="{{ route('dyqani.about') }}" class="block w-full px-4 py-4 text-gray-800 hover:bg-gray-50 hover:text-blue-600 transition border-b border-gray-200">About Us</a>
         <a href="{{ route('dyqani.contact') }}" class="block w-full px-4 py-4 text-gray-800 hover:bg-gray-50 hover:text-blue-600 transition">Contact</a>
     </nav>
